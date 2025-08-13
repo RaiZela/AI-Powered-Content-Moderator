@@ -1,0 +1,6 @@
+@ai_powered_content_moderator_backend_HostAddress = http://localhost:5283
+
+GET {{ai_powered_content_moderator_backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
