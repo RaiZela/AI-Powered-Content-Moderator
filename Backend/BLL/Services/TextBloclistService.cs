@@ -3,7 +3,7 @@ using Azure.AI.ContentSafety;
 using Azure.Core;
 using BLL.Models;
 using Microsoft.Extensions.Configuration;
-public interface ITextBloclistService
+public interface ITextBlocklistService
 {
     bool CreateOrUpdateTextBlockList(string blocklistName, string description);
     bool AddBlocklistitems(List<string> items, string blocklistName);
@@ -15,7 +15,7 @@ public interface ITextBloclistService
     bool RemoveBlockItems(List<string> blocklistItemIds, string blockListName);
     bool DeleteBlockList(string blocklistName);
 }
-public class TextBloclistService
+public class TextBloclistService : ITextBlocklistService
 {
     private readonly IConfiguration _configuration;
     public TextBloclistService(IConfiguration configuration)

@@ -7,6 +7,7 @@ namespace BLL.Services;
 public interface ITextModeratorService
 {
     List<ModerationResult> ModerateText(string input);
+    List<ModerationResult> ModerateTextWithBlocklist(string input, string blocklistName);
 }
 
 public class TextModeratorService : ITextModeratorService
