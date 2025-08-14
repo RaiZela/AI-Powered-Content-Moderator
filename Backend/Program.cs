@@ -23,73 +23,73 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 
-app.MapGet("/textmoderator", ([FromBody] string input, ITextModeratorService textModeratorService) =>
+app.MapGet("/textmoderator/get-severity", (string input, ITextModeratorService textModeratorService) =>
 {
     var result = textModeratorService.ModerateText(input);
     return Results.Ok(result);
 });
 
-app.MapGet("/textmoderator/blocklist", ([FromBody] string input, string blocklistName, ITextModeratorService textModeratorService) =>
+app.MapGet("/textmoderator/get-severity-with-blocklist", (string input, string blocklistName, ITextModeratorService textModeratorService) =>
 {
     var result = textModeratorService.ModerateTextWithBlocklist(input, blocklistName);
     return Results.Ok(result);
 });
 
-app.MapPost("/textblocklist", ([FromBody] string blocklistName, string description, ITextBlocklistService textBloclistService) =>
+app.MapPost("/textblocklist/add-blocklist", ([FromBody] string blocklistName, string description, ITextBlocklistService textBloclistService) =>
 {
     var result = textBloclistService.CreateOrUpdateTextBlockList(blocklistName, description);
     return result ? Results.Ok() : Results.BadRequest("Failed to create or update blocklist.");
 });
 
-app.MapPost("/textblocklist/items", ([FromBody] List<string> items, string blocklistName, ITextBlocklistService textBloclistService) =>
+app.MapPost("/textblocklist/add-blocklist-items", ([FromBody] List<string> items, string blocklistName, ITextBlocklistService textBloclistService) =>
 {
     var result = textBloclistService.AddBlocklistitems(items, blocklistName);
     return result ? Results.Ok() : Results.BadRequest("Failed to add items to blocklist.");
 });
 
-app.MapGet("/textblocklist", (ITextBlocklistService textBloclistService) =>
+app.MapGet("/textblocklist/get-blocklists", (ITextBlocklistService textBloclistService) =>
 {
     var blocklists = textBloclistService.GetBlocklists();
     return Results.Ok(blocklists);
 });
 
-app.MapGet("/textblocklist/{name}", (string name, ITextBlocklistService textBloclistService) =>
+app.MapGet("/textblocklist/get-blocklist-by-name/{name}", (string name, ITextBlocklistService textBloclistService) =>
 {
     var blocklist = textBloclistService.GetBlocklistByName(name);
     return blocklist != null ? Results.Ok(blocklist) : Results.NotFound("Blocklist not found.");
 });
 
-app.MapGet("/textblocklist/{blocklistName}/items", (string blocklistName, ITextBlocklistService textBloclistService) =>
+app.MapGet("/textblocklist/{blocklistName}/get-items", (string blocklistName, ITextBlocklistService textBloclistService) =>
 {
     var blockItems = textBloclistService.GetBlockItems(blocklistName);
     return Results.Ok(blockItems);
 });
 
-app.MapGet("/textblocklist/{blocklistName}/items/{blockItemId}", (string blockItemId, string blocklistName, ITextBlocklistService textBloclistService) =>
+app.MapGet("/textblocklist/{blocklistName}/get-block-item/{blockItemId}", (string blockItemId, string blocklistName, ITextBlocklistService textBloclistService) =>
 {
     var blockItem = textBloclistService.GetBlockItem(blockItemId, blocklistName);
     return blockItem != null ? Results.Ok(blockItem) : Results.NotFound("Block item not found.");
 });
 
-app.MapDelete("/textblocklist/{blocklistName}/items/{blocklistItemId}", (string blocklistItemId, string blocklistName, ITextBlocklistService textBloclistService) =>
+app.MapDelete("/textblocklist/{blocklistName}/remove-block-item/{blocklistItemId}", (string blocklistItemId, string blocklistName, ITextBlocklistService textBloclistService) =>
 {
     var result = textBloclistService.RemoveBlockItem(blocklistItemId, blocklistName);
     return result ? Results.Ok() : Results.BadRequest("Failed to remove block item.");
 });
 
-app.MapDelete("/textblocklist/{blocklistName}/items", ([FromBody] List<string> blocklistItemIds, string blocklistName, ITextBlocklistService textBloclistService) =>
+app.MapDelete("/textblocklist/{blocklistName}/remove-block-items", ([FromBody] List<string> blocklistItemIds, string blocklistName, ITextBlocklistService textBloclistService) =>
 {
     var result = textBloclistService.RemoveBlockItems(blocklistItemIds, blocklistName);
     return result ? Results.Ok() : Results.BadRequest("Failed to remove block items.");
 });
 
-app.MapDelete("/textblocklist/{blocklistName}", (string blocklistName, ITextBlocklistService textBloclistService) =>
+app.MapDelete("/textblocklist/delete-blocklist/{blocklistName}", (string blocklistName, ITextBlocklistService textBloclistService) =>
 {
     var result = textBloclistService.DeleteBlockList(blocklistName);
     return result ? Results.Ok() : Results.BadRequest("Failed to delete blocklist.");
 });
 
-app.MapPost("/image/moderate", (string imagePath, IImageService imageService) =>
+app.MapPost("/image/get-severity", (string imagePath, IImageService imageService) =>
 {
     var result = imageService.AnalyzeImageSeverity(imagePath);
     return Results.Ok(result);
