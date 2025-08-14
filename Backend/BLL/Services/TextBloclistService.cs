@@ -1,8 +1,7 @@
-﻿using Azure;
+﻿using ai_powered_content_moderator_backend.BLL.Helpers;
+using ai_powered_content_moderator_backend.BLL.Models.Text;
 using Azure.AI.ContentSafety;
 using Azure.Core;
-using BLL.Models;
-using Microsoft.Extensions.Configuration;
 public interface ITextBlocklistService
 {
     bool CreateOrUpdateTextBlockList(string blocklistName, string description);
@@ -24,15 +23,13 @@ public class TextBloclistService : ITextBlocklistService
     }
     public bool CreateOrUpdateTextBlockList(string blocklistName, string description)
     {
-        var endpoint = _configuration["ContentSafety:Endpoint"];
-        var key = _configuration["ContentSafety:Key"];
+        var blocklistClient = Authentication.GetBlocklistClient(_configuration);
         var name = blocklistName;
         var blocklistDescription = description;
         var data = new
         {
             Description = blocklistDescription
         };
-        BlocklistClient blocklistClient = new BlocklistClient(new Uri(endpoint), new AzureKeyCredential(key));
         var createResponse = blocklistClient.CreateOrUpdateTextBlocklist(name, RequestContent.Create(data));
 
         if (createResponse.Status == 201)
@@ -42,9 +39,7 @@ public class TextBloclistService : ITextBlocklistService
     }
     public bool AddBlocklistitems(List<string> items, string blocklistName)
     {
-        var endpoint = _configuration["ContentSafety:Endpoint"];
-        var key = _configuration["ContentSafety:Key"];
-        BlocklistClient blocklistClient = new BlocklistClient(new Uri(endpoint), new AzureKeyCredential(key));
+        var blocklistClient = Authentication.GetBlocklistClient(_configuration);
         var blockitems = new TextBlocklistItem[items.Count];
         foreach (var item in items)
         {
@@ -60,10 +55,7 @@ public class TextBloclistService : ITextBlocklistService
     }
     public List<Blocklist> GetBlocklists()
     {
-        BlocklistClient blocklistClient = new BlocklistClient(
-            new Uri(_configuration["ContentSafety:Endpoint"]),
-            new AzureKeyCredential(_configuration["ContentSafety:Key"]));
-
+        var blocklistClient = Authentication.GetBlocklistClient(_configuration);
         var blocklists = blocklistClient.GetTextBlocklists();
         List<Blocklist> blocklistItems = new List<Blocklist>();
         foreach (var blocklist in blocklists)
@@ -78,10 +70,7 @@ public class TextBloclistService : ITextBlocklistService
     }
     public Blocklist GetBlocklistByName(string name)
     {
-        BlocklistClient blocklistClient = new BlocklistClient(
-            new Uri(_configuration["ContentSafety:Endpoint"]),
-            new AzureKeyCredential(_configuration["ContentSafety:Key"]));
-
+        var blocklistClient = Authentication.GetBlocklistClient(_configuration);
         var blocklist = blocklistClient.GetTextBlocklist(name);
 
         if (blocklist != null)
@@ -96,11 +85,7 @@ public class TextBloclistService : ITextBlocklistService
     }
     public List<BlockItem> GetBlockItems(string blocklistName)
     {
-        BlocklistClient blocklistClient = new BlocklistClient(
-            new Uri(_configuration["ContentSafety:Endpoint"]),
-            new AzureKeyCredential(_configuration["ContentSafety:Key"]));
-
-
+        var blocklistClient = Authentication.GetBlocklistClient(_configuration);
         var allBlockItems = blocklistClient.GetTextBlocklistItems(blocklistName);
         List<BlockItem> blockItems = new List<BlockItem>();
         foreach (var blocklist in allBlockItems)
@@ -117,10 +102,7 @@ public class TextBloclistService : ITextBlocklistService
     }
     public BlockItem GetBlockItem(string blockItemId, string blocklistName)
     {
-        BlocklistClient blocklistClient = new BlocklistClient(
-            new Uri(_configuration["ContentSafety:Endpoint"]),
-            new AzureKeyCredential(_configuration["ContentSafety:Key"]));
-
+        var blocklistClient = Authentication.GetBlocklistClient(_configuration);
         var getBlockItem = blocklistClient.GetTextBlocklistItem(blocklistName, blockItemId);
 
         return new BlockItem
@@ -133,24 +115,16 @@ public class TextBloclistService : ITextBlocklistService
     }
     public bool RemoveBlockItem(string blocklistItemId, string blockListName)
     {
-        BlocklistClient blocklistClient = new BlocklistClient(
-            new Uri(_configuration["ContentSafety:Endpoint"]),
-            new AzureKeyCredential(_configuration["ContentSafety:Key"]));
-
+        var blocklistClient = Authentication.GetBlocklistClient(_configuration);
         var removeBlockItemIds = new List<string> { blocklistItemId };
         var response = blocklistClient.RemoveBlocklistItems(blockListName, new RemoveTextBlocklistItemsOptions(removeBlockItemIds));
         if (response.Status == 201)
             return true;
-
-
         return false;
     }
     public bool RemoveBlockItems(List<string> blocklistItemIds, string blockListName)
     {
-        BlocklistClient blocklistClient = new BlocklistClient(
-            new Uri(_configuration["ContentSafety:Endpoint"]),
-            new AzureKeyCredential(_configuration["ContentSafety:Key"]));
-
+        var blocklistClient = Authentication.GetBlocklistClient(_configuration);
         var response = blocklistClient.RemoveBlocklistItems(blockListName, new RemoveTextBlocklistItemsOptions(blocklistItemIds));
         if (response != null && response.Status == 204)
             return true;
@@ -159,9 +133,7 @@ public class TextBloclistService : ITextBlocklistService
     }
     public bool DeleteBlockList(string blocklistName)
     {
-        BlocklistClient blocklistClient = new BlocklistClient(
-            new Uri(_configuration["ContentSafety:Endpoint"]),
-            new AzureKeyCredential(_configuration["ContentSafety:Key"]));
+        var blocklistClient = Authentication.GetBlocklistClient(_configuration);
         var response = blocklistClient.DeleteTextBlocklist(blocklistName);
         if (response != null && response.Status == 204)
             return true;

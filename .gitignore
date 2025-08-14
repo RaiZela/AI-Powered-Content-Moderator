@@ -417,3 +417,8 @@ FodyWeavers.xsd
 *.msm
 *.msp
 /Backend/appsettings.Development.json
+/Backend/Samples/derick-mckinney-R_64i62mprM-unsplash.jpg
+/Backend/Samples/j-cruikshank-x_JbZ6bFg1Q-unsplash.jpg
+/Backend/Samples/laptop_working_01.jpg
+/Backend/Samples/Leonardo_Kino_XL_A_magical_open_vintage_book_on_a_wooden_table_1.jpg
+/Backend/Samples/max-bender-VmX3vmBecFE-unsplash.jpg

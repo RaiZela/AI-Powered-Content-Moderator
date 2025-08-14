@@ -1,3 +1,4 @@
+using ai_powered_content_moderator_backend.BLL.Services;
 using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ITextModeratorService, TextModeratorService>();
 builder.Services.AddScoped<ITextBlocklistService, TextBloclistService>();
+builder.Services.AddScoped<IImageService, ImageService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -21,25 +23,25 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 
-app.MapGet("/textmoderator", ([FromBody]string input, ITextModeratorService textModeratorService) =>
+app.MapGet("/textmoderator", ([FromBody] string input, ITextModeratorService textModeratorService) =>
 {
     var result = textModeratorService.ModerateText(input);
     return Results.Ok(result);
 });
 
-app.MapGet("/textmoderator/blocklist", ([FromBody]string input, string blocklistName, ITextModeratorService textModeratorService) =>
+app.MapGet("/textmoderator/blocklist", ([FromBody] string input, string blocklistName, ITextModeratorService textModeratorService) =>
 {
     var result = textModeratorService.ModerateTextWithBlocklist(input, blocklistName);
     return Results.Ok(result);
 });
 
-app.MapPost("/textblocklist", ([FromBody]string blocklistName, string description, ITextBlocklistService textBloclistService) =>
+app.MapPost("/textblocklist", ([FromBody] string blocklistName, string description, ITextBlocklistService textBloclistService) =>
 {
     var result = textBloclistService.CreateOrUpdateTextBlockList(blocklistName, description);
     return result ? Results.Ok() : Results.BadRequest("Failed to create or update blocklist.");
 });
 
-app.MapPost("/textblocklist/items", ([FromBody]List<string> items, string blocklistName, ITextBlocklistService textBloclistService) =>
+app.MapPost("/textblocklist/items", ([FromBody] List<string> items, string blocklistName, ITextBlocklistService textBloclistService) =>
 {
     var result = textBloclistService.AddBlocklistitems(items, blocklistName);
     return result ? Results.Ok() : Results.BadRequest("Failed to add items to blocklist.");
@@ -86,6 +88,61 @@ app.MapDelete("/textblocklist/{blocklistName}", (string blocklistName, ITextBloc
     var result = textBloclistService.DeleteBlockList(blocklistName);
     return result ? Results.Ok() : Results.BadRequest("Failed to delete blocklist.");
 });
+
+app.MapPost("/image/moderate", (string imagePath, IImageService imageService) =>
+{
+    var result = imageService.AnalyzeImageSeverity(imagePath);
+    return Results.Ok(result);
+});
+
+app.MapPost("/image/caption", (string imagePath, IImageService imageService) =>
+{
+    var result = imageService.GetImageCaption(imagePath);
+    return Results.Ok(result);
+});
+
+app.MapPost("/image/denseCaption", (string imagePath, IImageService imageService) =>
+{
+    var result = imageService.GetImageDenseCaption(imagePath);
+    return Results.Ok(result);
+});
+
+app.MapPost("/image/tags", (string imagePath, IImageService imageService) =>
+{
+    var result = imageService.GetImageTags(imagePath);
+    return Results.Ok(result);
+});
+
+app.MapPost("/image/objects", (string imagePath, IImageService imageService) =>
+{
+    var result = imageService.GetImageObjects(imagePath);
+    return Results.Ok(result);
+});
+
+app.MapPost("/image/smartCrops", (string imagePath, IImageService imageService) =>
+{
+    var result = imageService.GetImageSmartCrops(imagePath);
+    return Results.Ok(result);
+});
+
+app.MapPost("/image/people", (string imagePath, IImageService imageService) =>
+{
+    var result = imageService.GetImagePeople(imagePath);
+    return Results.Ok(result);
+});
+
+app.MapPost("/image/text", (string imagePath, IImageService imageService) =>
+{
+    var result = imageService.GetImageText(imagePath);
+    return Results.Ok(result);
+});
+
+app.MapPost("/image/allfeatures", (string imagePath, IImageService imageService) =>
+{
+    var result = imageService.GetAllImageFeatures(imagePath);
+    return Results.Ok(result);
+});
+
 
 app.Run();
 

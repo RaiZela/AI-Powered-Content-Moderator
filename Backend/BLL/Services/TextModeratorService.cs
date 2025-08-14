@@ -1,7 +1,7 @@
-﻿using Azure;
+﻿using ai_powered_content_moderator_backend.BLL.Helpers;
+using ai_powered_content_moderator_backend.BLL.Models.Text;
+using Azure;
 using Azure.AI.ContentSafety;
-using BLL.Models;
-using Microsoft.Extensions.Configuration;
 
 namespace BLL.Services;
 public interface ITextModeratorService
@@ -20,13 +20,7 @@ public class TextModeratorService : ITextModeratorService
 
     public List<ModerationResult> ModerateText(string input)
     {
-        // Step 1: Get the API key  
-        var endpoint = _configuration["ContentSafety:Endpoint"];
-        var key = _configuration["ContentSafety:Key"];
-
-        // Step 2: Create a ContentSafetyClient with AzureKeyCredential  
-        ContentSafetyClient contentSafetyClient = new ContentSafetyClient(new Uri(endpoint), new AzureKeyCredential(key));
-
+        var contentSafetyClient = Authentication.GetSafetyClient(_configuration);
         Response<AnalyzeTextResult> response = null;
         var request = new AnalyzeTextOptions(text: input);
         response = contentSafetyClient.AnalyzeText(request);
