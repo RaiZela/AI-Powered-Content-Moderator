@@ -39,11 +39,38 @@ An intelligent content moderation tool built in **C#** that uses AI to detect an
 ## 5. Responsive UI
 - Works well on desktop and mobile browsers.
 - Simple, minimal design focusing on input → results flow.
+
+## 6. Existing APIs
+- GET /textmoderator/get-severity 
+- GET /textmoderator/get-severity-with-blocklist 
+- POST /textblocklist/add-blocklist
+- POST /textblocklist/add-blocklist-items 
+- GET /textblocklist/get-blocklists 
+- GET /textblocklist/get-blocklist-by-name/{name} 
+- GET /textblocklist/{blocklistName}/get-items 
+- GET /textblocklist/{blocklistName}/get-block-item/{blockItemId} 
+- DELETE /textblocklist/{blocklistName}/remove-block-item/{blocklistItemId}
+- DELETE /textblocklist/{blocklistName}/remove-block-items
+- DELETE /textblocklist/delete-blocklist/{blocklistName}
+- POST /image/get-severity
+- POST /image/get-caption
+- POST /image/get-denseCaption
+- POST /image/get-tags
+- POST /image/get-objects
+- POST /image/get-smartCrops
+- POST /image/get-people
+- POST /image/get-text
+- POST /image/get-allfeatures
   
 # Screenshots or GIF demos
 //Updated while working
 # Technologies Used
-
+- .NET8.0
+- Minimal APIs
+- Azure
+- Azure Computer Vision
+- Azure Cognitive Services
+  
 # Setup & Installation Instructions
 
 # How to Obtain and Configure Azure Content Moderator API Key
