@@ -34,15 +34,13 @@ function App() {
             <FiChevronDown className="arrow" />
           </a>
         </section>
-        <section>
-          <div id="next-section">
+        <section id="next-section">
             <div className="text-card">
               <BasicTextCard />
             </div>
             <div className="image-card">
               <BasicImageCard />
             </div>
-          </div>
         </section>
       </header>
       <RoutesComponent />

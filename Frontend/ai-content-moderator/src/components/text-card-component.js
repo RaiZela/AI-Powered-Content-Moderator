@@ -10,7 +10,7 @@ import Tab from "@mui/material/Tab";
 
 function BasicTextCard() {
   return (
-    <Card sx={{ minWidth: 275 }}>
+    <Card sx={{ minWidth: 275 }} >
       <CardContent>
         <Box>
           <Tab label="Text"></Tab>

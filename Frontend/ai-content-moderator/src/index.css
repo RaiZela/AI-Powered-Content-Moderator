@@ -83,6 +83,7 @@ color: white;;
   display: flex;
   justify-content: space-evenly;
   margin-top:10%;
+  background-color: black;
 }
 
 .MuiTabs-scrollButtons.Mui-disabled {
@@ -99,4 +100,5 @@ color: white;;
   display: flex;
   max-width: 50%;
   justify-content: center;
+  width: 40% !important;
 }
