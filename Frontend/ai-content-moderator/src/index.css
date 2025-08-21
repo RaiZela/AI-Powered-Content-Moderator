@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: black;
 }
 
 code {
@@ -81,9 +82,18 @@ color: white;;
 
 #next-section{
   display: flex;
-  justify-content: space-evenly;
+  flex-direction: row;
   margin-top:10%;
-  background-color: black;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+@media (max-width: 800px){
+  #next-section{
+    flex-direction: column;
+    overflow: hidden;
+    justify-content: center;
+  }
 }
 
 .MuiTabs-scrollButtons.Mui-disabled {
@@ -92,13 +102,13 @@ color: white;;
 
 .image-card{
   display: flex;
-  max-width: 50%;
   justify-content: center;
+    width:50%;
 }
 
 .text-card{
   display: flex;
-  max-width: 50%;
   justify-content: center;
-  width: 40% !important;
+  width:100%;
 }
+

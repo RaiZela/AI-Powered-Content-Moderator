@@ -22,6 +22,7 @@ public class TextModeratorService : ITextModeratorService
     {
         var contentSafetyClient = Authentication.GetSafetyClient(_configuration);
         Response<AnalyzeTextResult> response = null;
+        input = string.IsNullOrEmpty(input) ? "test" : input;
         var request = new AnalyzeTextOptions(text: input);
         response = contentSafetyClient.AnalyzeText(request);
         List<ModerationResult> results = new List<ModerationResult>();

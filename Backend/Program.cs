@@ -11,6 +11,16 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ITextModeratorService, TextModeratorService>();
 builder.Services.AddScoped<ITextBlocklistService, TextBloclistService>();
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder =>
+        {
+            builder.AllowAnyOrigin() // Allows requests from any origin
+                   .AllowAnyMethod() // Allows any HTTP method (GET, POST, PUT, DELETE, etc.)
+                   .AllowAnyHeader(); // Allows any HTTP header
+        });
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -143,6 +153,7 @@ app.MapPost("/image/allfeatures", (string imagePath, IImageService imageService)
     return Results.Ok(result);
 });
 
+app.UseCors("AllowAllOrigins");
 
 app.Run();
 
