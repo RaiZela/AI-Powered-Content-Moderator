@@ -10,11 +10,10 @@ An intelligent content moderation tool built in **C#** that uses AI to detect an
 
 - Displayed results showing:
   
-  1)Profanity detection (flag bad words).
+  1)Profanity level detection.
   
-  2)Classification (e.g., offensive, threatening).
-  
-  3)Suggestions for flagged content (if available).
+  2)Classification (e.g., violence, self harm).
+
 
 ## 2. Image Moderation
 - User can upload an image (JPEG, PNG).
@@ -33,7 +32,7 @@ An intelligent content moderation tool built in **C#** that uses AI to detect an
 - Show image with overlay icons if flagged.
 
 ## 4. Error Handling
-- Inform the user if API call fails or input is invalid.
+- Inform the user if API call fails.
 - Prevent submission of empty input.
 
 ## 5. Responsive UI
