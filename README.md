@@ -113,9 +113,7 @@ In your project, store the values in a **secure configuration file** (e.g., `app
 ```
 
 Then load them in your application code:
-
-var endpoint = Configuration["AzureContentModerator:Endpoint"];
-var apiKey = Configuration["AzureContentModerator:ApiKey"];
+ ```var endpoint = Configuration["AzureContentModerator:Endpoint"]; var apiKey = Configuration["AzureContentModerator:ApiKey"]; ```
 
 # License
 - MIT License
