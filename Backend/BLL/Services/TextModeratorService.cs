@@ -22,9 +22,23 @@ public class TextModeratorService : ITextModeratorService
     {
         var contentSafetyClient = Authentication.GetSafetyClient(_configuration);
         Response<AnalyzeTextResult> response = null;
-        input = string.IsNullOrEmpty(input) ? "test" : input;
+        if (string.IsNullOrEmpty(input))
+        {
+            throw new ArgumentException("Input text cannot be null or empty.");
+        }
         var request = new AnalyzeTextOptions(text: input);
-        response = contentSafetyClient.AnalyzeText(request);
+        try
+        {
+            response = contentSafetyClient.AnalyzeText(request);
+            if (response.Value == null)
+            {
+                throw new Exception("Failed to analyze text.");
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
         List<ModerationResult> results = new List<ModerationResult>();
         if (response.Value != null && response.Value.CategoriesAnalysis != null)
         {
